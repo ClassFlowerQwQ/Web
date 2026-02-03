@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>直播站</title>
+  <title>篁竹委</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- HLS & FLV -->
+  <!-- HLS / FLV -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/flv.js@latest"></script>
 
@@ -70,19 +70,18 @@
 <body>
 
 <header>
-  <h1>我的直播站</h1>
+  <h1>北京师范大学附属实验中学2026届初中16班2026拜年祭实时直播平台</h1>
   <div id="time"></div>
 </header>
 
 <main>
-  <!-- 播放器：你只改 src -->
   <video id="player" controls autoplay muted></video>
-
-  <div id="quote">加载中…</div>
+  <div id="quote"></div>
 </main>
 
 <footer>
-  © 2026 Your Site Name
+  © 2026 YashimaDev  All rights reserved.
+  Powered by Github Pages | OpenAI GPT-4 | Yashima Sou
 </footer>
 
 <script>
@@ -98,7 +97,7 @@
   /* ===== 播放器 ===== */
   const video = document.getElementById("player");
 
-  // ↓↓↓ 在这里填你的流地址 ↓↓↓
+  // 在这里填直播流地址
   const streamUrl = ""; // 例如：https://example.com/live.m3u8
 
   if (streamUrl.endsWith(".m3u8")) {
@@ -122,19 +121,16 @@
     video.src = streamUrl;
   }
 
-  /* ===== 一言 JSON ===== */
-  fetch("quotes.json")
-    .then(res => res.json())
-    .then(list => {
-      if (Array.isArray(list) && list.length > 0) {
-        const item = list[Math.floor(Math.random() * list.length)];
-        document.getElementById("quote").textContent =
-          typeof item === "string" ? item : item.text;
-      }
-    })
-    .catch(() => {
-      document.getElementById("quote").textContent = "获取一言失败";
-    });
+  /* ===== 一言（写死在 HTML） ===== */
+  const quotes = [
+    "Hello, World!",
+    "In solitude, Where we are least alone.  ——『ヨスガノソラ』",
+    "下次一定",
+    "wonderhoi!已出现人传人现象"
+  ];
+
+  const q = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById("quote").textContent = q;
 </script>
 
 </body>
