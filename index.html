@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>篁竹委</title>
+  <title>篁竹委透明公益庭审直播平台</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- HLS / FLV -->
@@ -54,7 +54,7 @@
       max-width: 960px;
       font-size: 15px;
       opacity: 0.85;
-      text-align: center;
+      text-align: left;
       min-height: 1.5em;
     }
 
@@ -70,17 +70,18 @@
 <body>
 
 <header>
-  <h1>北京师范大学附属实验中学2026届初中16班2026拜年祭实时直播平台</h1>
+  <h1>篁竹委透明公益庭审直播平台</h1>
   <div id="time"></div>
 </header>
 
 <main>
+  <p>当前没有庭审，正在转播北京移动IPTV-北京卫视频道。</p>
   <video id="player" controls autoplay muted></video>
   <div id="quote"></div>
 </main>
 
 <footer>
-  © 2026 YashimaDev  All rights reserved.
+  © 2026 YashimaDev  All rights reserved.\n
   Powered by Github Pages | OpenAI GPT-4 | Yashima Sou
 </footer>
 
@@ -98,7 +99,7 @@
   const video = document.getElementById("player");
 
   // 在这里填直播流地址
-  const streamUrl = ""; // 例如：https://example.com/live.m3u8
+  const streamUrl = "http://120.211.62.180:8000/hls/35/index.m3u8"; // 例如：https://example.com/live.m3u8
 
   if (streamUrl.endsWith(".m3u8")) {
     if (Hls.isSupported()) {
@@ -124,7 +125,7 @@
   /* ===== 一言（写死在 HTML） ===== */
   const quotes = [
     "Hello, World!",
-    "In solitude, Where we are least alone.  ——『ヨスガノソラ』",
+    "In solitude, Where we are least alone.\n——『ヨスガノソラ』",
     "下次一定",
     "wonderhoi!已出现人传人现象"
   ];
