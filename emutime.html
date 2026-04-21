@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>一模倒计时</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #1e1e2f, #2c3e50);
+        color: #fff;
+        font-family: "Microsoft YaHei", sans-serif;
+        text-align: center;
+    }
+    .container {
+        padding: 40px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.05);
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    h1 {
+        margin-bottom: 20px;
+        font-size: 32px;
+    }
+    .time {
+        font-size: 48px;
+        letter-spacing: 2px;
+    }
+    .sub {
+        margin-top: 20px;
+        font-size: 18px;
+        opacity: 0.8;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>距离一模语文开考还有</h1>
+    <div class="time" id="countdown">计算中...</div>
+    <div class="sub">明早 08:00，稳住就是赢</div>
+</div>
+
+<script>
+function getTargetTime() {
+    let now = new Date();
+    let target = new Date();
+
+    target.setDate(now.getDate() + 1);
+    target.setHours(8, 0, 0, 0);
+
+    return target;
+}
+
+function updateCountdown() {
+    let now = new Date();
+    let target = getTargetTime();
+    let diff = target - now;
+
+    if (diff <= 0) {
+        document.getElementById("countdown").innerHTML = "已经开考了！冲！";
+        return;
+    }
+
+    let hours = Math.floor(diff / (1000 * 60 * 60));
+    let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML =
+        hours + "小时 " + minutes + "分 " + seconds + "秒";
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+</body>
+</html>
