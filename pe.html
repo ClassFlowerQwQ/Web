@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>体育中考倒计时</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #0f2027, #2c5364);
+        color: #fff;
+        font-family: "Microsoft YaHei", sans-serif;
+        text-align: center;
+    }
+    .container {
+        padding: 50px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.05);
+        box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    }
+    h1 {
+        margin-bottom: 20px;
+        font-size: 34px;
+    }
+    .time {
+        font-size: 52px;
+        letter-spacing: 2px;
+    }
+    .alert {
+        font-size: 64px;
+        color: #ff4d4f;
+        font-weight: bold;
+        animation: blink 1s infinite;
+    }
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+    .sub {
+        margin-top: 20px;
+        font-size: 18px;
+        opacity: 0.85;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>距离体育中考开考还有</h1>
+    <div class="time" id="countdown">计算中...</div>
+    <div class="sub">今天 13:30</div>
+</div>
+
+<script>
+function getTargetTime() {
+    let now = new Date();
+    let target = new Date();
+
+    // 今天 13:30
+    target.setHours(13, 30, 0, 0);
+
+    return target;
+}
+
+function updateCountdown() {
+    let now = new Date();
+    let target = getTargetTime();
+    let diff = target - now;
+    let display = document.getElementById("countdown");
+
+    if (diff <= 0) {
+        display.className = "alert";
+        display.innerHTML = "⚠️没有时间了！";
+        return;
+    }
+
+    let hours = Math.floor(diff / (1000 * 60 * 60));
+    let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    display.innerHTML =
+        hours + "小时 " + minutes + "分 " + seconds + "秒";
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+</body>
+</html>
