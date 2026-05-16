@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动态码</title>
+
+<style>
+    body{
+        margin:0;
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        background:#111;
+        color:white;
+        font-family:Arial;
+    }
+
+    .code{
+        font-size:72px;
+        font-weight:bold;
+        letter-spacing:10px;
+    }
+
+    .time{
+        margin-top:20px;
+        opacity:0.7;
+    }
+</style>
+</head>
+<body>
+
+<div class="code" id="code">000000</div>
+<div class="time" id="time"></div>
+
+<script>
+function generateCode() {
+
+    // 当前10分钟时间片
+    const timeSlice = Math.floor(Date.now() / 1000 / 600);
+
+    // 固定算法
+    let code = (timeSlice * 9301 + 49297) % 1000000;
+
+    // 补零
+    return code.toString().padStart(6, '0');
+}
+
+function update() {
+
+    document.getElementById("code").innerText = generateCode();
+
+    const now = new Date();
+
+    document.getElementById("time").innerText =
+        "当前时间：" + now.toLocaleString();
+}
+
+update();
+
+// 每秒刷新一次显示
+setInterval(update, 1000);
+</script>
+
+</body>
+</html>
