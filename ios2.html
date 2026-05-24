@@ -3,177 +3,180 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>设备资产中心</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 
     <style>
+        /* iOS 基础重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* 移除点击高亮 */
         }
 
         body {
-            background: #071311;
-            color: white;
-            font-family: "Microsoft YaHei", sans-serif;
-            padding: 24px;
+            /* 纯正的 iOS 深色模式背景色 */
+            background-color: #000000;
+            color: #FFFFFF;
+            /* 强制调用 Apple 原生系统字体 SF Pro */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 32px 40px;
             overflow-x: hidden;
         }
 
-        /* 扫描线 */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(transparent 50%, rgba(57, 197, 187, 0.02) 50%);
-            background-size: 100% 4px;
-            opacity: .45;
-            z-index: 999;
-        }
-
-        /* 标题 */
+        /* 顶部大标题 (类似 iOS 设置应用) */
         .header {
-            text-align: center;
             margin-bottom: 24px;
+            padding-left: 4px;
         }
 
         h1 {
             font-size: 34px;
-            color: #39C5BB;
+            font-weight: 700;
+            letter-spacing: 0.4px;
         }
 
         #time {
-            margin-top: 8px;
-            color: #8EB5B1;
-            font-size: 14px;
-            letter-spacing: 1px;
+            margin-top: 6px;
+            /* iOS 次级文本标准灰色 */
+            color: #8E8E93;
+            font-size: 15px;
+            font-weight: 500;
         }
 
-        /* 统一的 Dashboard 顶部面板 */
+        /* 顶部小组件网格 (Widgets) */
         .dashboard-top {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .dash-card {
-            background: #101D1B;
-            border: 1px solid #2E6F69;
-            border-radius: 18px;
-            padding: 20px 24px;
+            /* iOS 经典的二级卡片底色 */
+            background-color: #1C1C1E;
+            border-radius: 24px;
+            padding: 22px 24px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            transition: all .25s ease;
             position: relative;
-            overflow: hidden;
+            /* 丝滑的果味弹性动画 */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.2s ease;
+            cursor: pointer;
         }
 
-        .dash-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(57, 197, 187, 0.15);
-            border-color: #39C5BB;
+        .dash-card:active {
+            transform: scale(0.96);
+            background-color: #2C2C2E;
         }
 
-        /* 核心枢纽专属样式 */
+        /* 核心枢纽：Apple 标志性的鲜艳渐变卡片 */
         .core-card {
-            background: linear-gradient(90deg, #10201D, #17322E);
-            box-shadow: 0 0 24px rgba(57, 197, 187, 0.12);
-            animation: pulse 4s ease-in-out infinite;
+            background: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%);
+            box-shadow: 0 10px 30px rgba(10, 132, 255, 0.2);
         }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 16px rgba(57, 197, 187, 0.12); }
-            50% { box-shadow: 0 0 32px rgba(57, 197, 187, 0.24); }
-            100% { box-shadow: 0 0 16px rgba(57, 197, 187, 0.12); }
+        .core-card:active {
+            background: linear-gradient(135deg, #0970D9 0%, #4D4BB3 100%);
+            transform: scale(0.98);
         }
 
         .dash-card .label {
-            font-size: 14px;
-            color: #8CBDB9;
+            font-size: 13px;
+            font-weight: 600;
+            color: #8E8E93;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 8px;
             z-index: 2;
         }
 
+        /* 核心卡片的次级文字需要白色半透明以适应渐变背景 */
+        .core-card .label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         .dash-card .value {
-            font-size: 36px;
-            font-weight: bold;
-            color: #39C5BB;
+            font-size: 34px;
+            font-weight: 700;
+            color: #FFFFFF;
             line-height: 1.2;
             z-index: 2;
+            font-variant-numeric: tabular-nums;
         }
 
         .core-card .coreTitle {
-            font-size: 20px;
-            font-weight: bold;
-            color: #5DE0D5;
-            margin-bottom: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 4px;
             z-index: 2;
+            letter-spacing: 0.2px;
         }
 
         .core-card .value {
             font-size: 42px;
-            z-index: 2;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
-        /* Lottie 动画容器 */
+        /* Lottie 动画容器，移除老旧滤镜，加一点阴影融入环境 */
         #lottie-core {
             position: absolute;
-            right: 24px;
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            width: 80px;
-            height: 80px;
-            opacity: 0.95;
+            width: 85px;
+            height: 85px;
             pointer-events: none;
-            filter: drop-shadow(0 0 8px rgba(57, 197, 187, 0.3));
             z-index: 1;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+            opacity: 0.9;
         }
 
-        /* 独立处理保障组织的字号结构 */
         .support-card .title {
             font-size: 16px;
-            font-weight: bold;
-            color: #D8F2EF;
-            margin-bottom: 8px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 6px;
         }
         
         .support-card .value {
-            font-size: 16px;
-            color: #39C5BB;
+            font-size: 15px;
+            font-weight: 500;
+            color: #0A84FF; /* iOS 原生蓝 */
         }
 
-        /* 设备网格 */
+        /* 底部设备网格 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
         }
 
         .card {
-            background: #101D1B;
-            padding: 20px;
-            border-radius: 18px;
-            border: 1px solid #2E6F69;
-            box-shadow: 0 0 16px rgba(57, 197, 187, 0.12);
-            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+            background-color: #1C1C1E;
+            border-radius: 24px;
+            padding: 24px;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
         }
 
-        .card:hover {
-            transform: translateY(-6px);
-            border-color: #39C5BB;
-            box-shadow: 0 12px 30px rgba(57, 197, 187, 0.28);
+        .card:active {
+            transform: scale(0.97);
         }
 
         .top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .status {
@@ -181,124 +184,119 @@
             align-items: center;
             gap: 6px;
             font-size: 13px;
-            color: #D8F2EF;
+            font-weight: 600;
+            color: #8E8E93;
         }
 
+        /* iOS 风格的指示灯 */
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
         }
 
         .green {
-            background: #39C5BB;
-            box-shadow: 0 0 12px #39C5BB;
+            background-color: #32D74B; /* iOS 原生绿 */
+            box-shadow: 0 0 8px rgba(50, 215, 75, 0.5);
         }
 
         .gray {
-            background: #777;
+            background-color: #636366;
         }
 
         .type {
             font-size: 13px;
-            color: #8CBDB9;
-            background: rgba(57, 197, 187, 0.1);
-            padding: 2px 8px;
-            border-radius: 8px;
+            font-weight: 600;
+            color: #0A84FF;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .name {
             font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -0.4px;
+            margin-bottom: 16px;
+            color: #FFFFFF;
         }
 
-        /* 修复 Hover 错位问题的关键 */
         .days {
-            font-size: 46px;
-            font-weight: bold;
-            color: #39C5BB;
-            display: inline-block; /* 保证变形不影响文档流 */
-            transform-origin: left bottom; /* 从左下角放大 */
-            transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .card:hover .days {
-            transform: scale(1.08); /* 轻微放大不再挤压底部元素 */
+            font-size: 44px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -1px;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 8px;
         }
 
         .runtime {
             font-size: 15px;
-            color: #B5D5D1;
-            margin-top: 5px;
+            font-weight: 500;
+            color: #EBEBF5; /* iOS 次级文字的高亮版 */
+            opacity: 0.8;
         }
 
         .date {
             font-size: 13px;
-            margin-top: 12px;
-            line-height: 1.7;
-            color: #8AA9A5;
+            font-weight: 400;
+            margin-top: 16px;
+            line-height: 1.6;
+            color: #8E8E93;
         }
 
-        /* 子设备 */
+        /* 子设备重构为 iOS 原生内嵌分组列表 (Inset Grouped) */
         .childBox {
-            margin-top: 15px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 20px;
+            background-color: #2C2C2E;
+            border-radius: 12px;
+            overflow: hidden; /* 保证子元素不会溢出圆角 */
         }
 
         .child {
-            background: rgba(255, 255, 255, 0.04);
-            padding: 10px;
-            margin-top: 8px;
-            border-radius: 10px;
-            opacity: 0;
-            transform: translateY(8px);
-            animation: appear .4s forwards;
-            transition: all .25s ease;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* 原生分割线 */
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1); 
         }
 
-        .child:hover {
-            background: rgba(57, 197, 187, 0.08);
-        }
-
-        @keyframes appear {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .childType {
-            font-size: 12px;
-            color: #8CBDB9;
+        .child:last-child {
+            border-bottom: none;
         }
 
         .childName {
-            font-size: 14px;
-            margin: 4px 0;
+            font-size: 15px;
+            font-weight: 500;
+            color: #FFFFFF;
         }
 
         .childDay {
-            font-size: 12px;
-            color: #39C5BB;
+            font-size: 15px;
+            font-weight: 400;
+            color: #8E8E93;
         }
 
         /* 页脚 */
         .footer {
             text-align: center;
-            margin-top: 26px;
-            color: #688784;
+            margin-top: 40px;
+            color: #636366;
             font-size: 13px;
+            font-weight: 500;
         }
 
-        /* 响应式布局调整 */
-        @media(max-width: 1100px) {
+        /* 针对 iPad 竖屏及手机的响应式 */
+        @media(max-width: 1024px) {
             .dashboard-top {
                 grid-template-columns: 1fr 1fr;
             }
             .core-card {
                 grid-column: span 2;
+            }
+            body {
+                padding: 24px;
             }
         }
 
@@ -309,8 +307,8 @@
             .core-card {
                 grid-column: span 1;
             }
-            #lottie-core {
-                opacity: 0.3; /* 手机端背景化，防止遮挡文字 */
+            .days {
+                font-size: 38px;
             }
         }
     </style>
@@ -355,13 +353,13 @@
     </div>
 
     <script>
-        // 初始化 Lottie 动画（直接调用外部 json 文件）
+        // 初始化 Lottie 动画 (依然挂载同级目录下的 fufu.json)
         lottie.loadAnimation({
             container: document.getElementById('lottie-core'), 
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'fufu.json' // 确保你的 fufu.json 和 html 文件在同一个目录下
+            path: 'fufu.json' 
         });
 
         const devices = [
@@ -439,7 +437,7 @@
             
             return {
                 days,
-                runtime: `${y}年 ${m}月 ${d}天`,
+                runtime: `${y}年 ${m}个月 ${d}天`,
                 active: now >= start && (!device.end || now < new Date(device.end))
             };
         }
@@ -449,7 +447,7 @@
             const days = Math.floor((now - coreStart) / 86400000);
             
             document.getElementById("coreRuntime").innerText = days + " 天";
-            document.getElementById("humanDays").innerText = "累计运行 " + days + "天";
+            document.getElementById("humanDays").innerText = "运行时长 " + days + " 天";
         }
 
         function render() {
@@ -466,16 +464,16 @@
                         <div class="top">
                             <div class="status">
                                 <div class="dot ${data.active ? "green" : "gray"}"></div>
-                                ${data.active ? "服役中" : "服役周期结束"}
+                                ${data.active ? "服役中" : "已归档"}
                             </div>
                             <div class="type">${device.type}</div>
                         </div>
                         <div class="name">${device.name}</div>
-                        <div class="days">${data.days}天</div>
-                        <div class="runtime">累计服役 ${data.runtime}</div>
+                        <div class="days">${data.days} 天</div>
+                        <div class="runtime">累计运行时长：${data.runtime}</div>
                         <div class="date">
-                            投入服役：${device.start}
-                            ${device.end ? `<br>结束服役：${device.end}` : ""}
+                            始于 ${device.start}
+                            ${device.end ? `<br>终于 ${device.end}` : ""}
                         </div>
                         ${device.children ? `
                             <div class="childBox">
@@ -483,9 +481,8 @@
                                     const c = calc(x);
                                     return `
                                         <div class="child">
-                                            <div class="childType">${x.type}</div>
                                             <div class="childName">${x.name}</div>
-                                            <div class="childDay">累计服役 ${c.days}天</div>
+                                            <div class="childDay">${c.days} 天</div>
                                         </div>
                                     `;
                                 }).join("")}
@@ -502,7 +499,8 @@
         }
 
         function clock() {
-            document.getElementById("time").innerText = new Date().toLocaleString("zh-CN", { hour12: false });
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById("time").innerText = "最后更新状态：" + new Date().toLocaleString("zh-CN", options).replace(/\//g, '-');
         }
 
         render();

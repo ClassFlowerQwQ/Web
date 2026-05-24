@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>设备资产中心</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+
+    <style>
+        /* iOS 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* 移除点击高亮 */
+        }
+
+        body {
+            /* 纯正的 iOS 深色模式背景色 */
+            background-color: #000000;
+            color: #FFFFFF;
+            /* 强制调用 Apple 原生系统字体 SF Pro */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 32px 40px;
+            overflow-x: hidden;
+        }
+
+        /* 顶部大标题 (类似 iOS 设置应用) */
+        .header {
+            margin-bottom: 24px;
+            padding-left: 4px;
+        }
+
+        h1 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        #time {
+            margin-top: 6px;
+            /* iOS 次级文本标准灰色 */
+            color: #8E8E93;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* 顶部小组件网格 (Widgets) */
+        .dashboard-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .dash-card {
+            /* iOS 经典的二级卡片底色 */
+            background-color: #1C1C1E;
+            border-radius: 24px;
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            /* 丝滑的果味弹性动画 */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .dash-card:active {
+            transform: scale(0.96);
+            background-color: #2C2C2E;
+        }
+
+        /* 核心枢纽：Apple 标志性的鲜艳渐变卡片 */
+        .core-card {
+            background: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%);
+            box-shadow: 0 10px 30px rgba(10, 132, 255, 0.2);
+        }
+        .core-card:active {
+            background: linear-gradient(135deg, #0970D9 0%, #4D4BB3 100%);
+            transform: scale(0.98);
+        }
+
+        .dash-card .label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #8E8E93;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            z-index: 2;
+        }
+
+        /* 核心卡片的次级文字需要白色半透明以适应渐变背景 */
+        .core-card .label {
+            color: rgba(255, 255

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>设备资产中心</title>
+    <title>设备资产中心 - 终端模式</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 
     <style>
@@ -15,41 +15,65 @@
         }
 
         body {
-            background: #071311;
-            color: white;
-            font-family: "Microsoft YaHei", sans-serif;
+            /* 深邃的黑底，带有极暗的绿色调 */
+            background: #020806;
+            color: #39C5BB;
+            /* 强制等宽字体，经典终端感 */
+            font-family: "Courier New", Courier, monospace;
             padding: 24px;
             overflow-x: hidden;
+            text-shadow: 0 0 4px rgba(57, 197, 187, 0.5); /* CRT 荧光溢出效应 */
         }
 
-        /* 扫描线 */
+        /* 强化的 CRT 扫描线 */
         body::before {
             content: "";
             position: fixed;
             inset: 0;
             pointer-events: none;
-            background: linear-gradient(transparent 50%, rgba(57, 197, 187, 0.02) 50%);
-            background-size: 100% 4px;
-            opacity: .45;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
             z-index: 999;
+            opacity: 0.6;
         }
 
-        /* 标题 */
+        /* 屏幕轻微闪烁动画 */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: rgba(57, 197, 187, 0.02);
+            animation: flicker 0.15s infinite;
+            z-index: 998;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.9; }
+            100% { opacity: 1; }
+        }
+
+        /* 标题：加上括号模拟纯文本 UI */
         .header {
-            text-align: center;
+            text-align: left;
             margin-bottom: 24px;
+            border-bottom: 2px dashed #39C5BB;
+            padding-bottom: 10px;
         }
 
         h1 {
-            font-size: 34px;
-            color: #39C5BB;
+            font-size: 28px;
+            text-transform: uppercase;
         }
+        h1::before { content: "SYS.INIT_> "; }
 
         #time {
             margin-top: 8px;
-            color: #8EB5B1;
+            color: #237A74;
             font-size: 14px;
-            letter-spacing: 1px;
         }
 
         /* 统一的 Dashboard 顶部面板 */
@@ -61,66 +85,61 @@
         }
 
         .dash-card {
-            background: #101D1B;
-            border: 1px solid #2E6F69;
-            border-radius: 18px;
+            background: #000;
+            border: 1px solid #39C5BB;
             padding: 20px 24px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            transition: all .25s ease;
             position: relative;
-            overflow: hidden;
+            /* 移除平滑过渡，恢复生硬感 */
+            transition: none; 
         }
 
+        /* 悬浮时色彩反转，老式光标效果 */
         .dash-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(57, 197, 187, 0.15);
-            border-color: #39C5BB;
+            background: #39C5BB;
+            color: #000;
+            text-shadow: none;
+        }
+        .dash-card:hover .label,
+        .dash-card:hover .value,
+        .dash-card:hover .coreTitle,
+        .dash-card:hover .support-card .title {
+            color: #000;
         }
 
         /* 核心枢纽专属样式 */
         .core-card {
-            background: linear-gradient(90deg, #10201D, #17322E);
-            box-shadow: 0 0 24px rgba(57, 197, 187, 0.12);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 16px rgba(57, 197, 187, 0.12); }
-            50% { box-shadow: 0 0 32px rgba(57, 197, 187, 0.24); }
-            100% { box-shadow: 0 0 16px rgba(57, 197, 187, 0.12); }
+            border: 2px solid #39C5BB;
+            box-shadow: inset 0 0 15px rgba(57, 197, 187, 0.2);
         }
 
         .dash-card .label {
-            font-size: 14px;
-            color: #8CBDB9;
+            font-size: 12px;
+            color: #237A74;
             margin-bottom: 8px;
-            z-index: 2;
+            text-transform: uppercase;
         }
+        .dash-card .label::before { content: "[ "; }
+        .dash-card .label::after { content: " ]"; }
 
         .dash-card .value {
             font-size: 36px;
             font-weight: bold;
             color: #39C5BB;
             line-height: 1.2;
-            z-index: 2;
         }
 
         .core-card .coreTitle {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            color: #5DE0D5;
+            color: #39C5BB;
             margin-bottom: 6px;
-            z-index: 2;
+            text-transform: uppercase;
         }
 
-        .core-card .value {
-            font-size: 42px;
-            z-index: 2;
-        }
-
-        /* Lottie 动画容器 */
+        /* Lottie 动画容器 - 强制单色绿化滤镜 */
         #lottie-core {
             position: absolute;
             right: 24px;
@@ -128,45 +147,56 @@
             transform: translateY(-50%);
             width: 80px;
             height: 80px;
-            opacity: 0.95;
             pointer-events: none;
-            filter: drop-shadow(0 0 8px rgba(57, 197, 187, 0.3));
-            z-index: 1;
+            /* 通过滤镜将原本的彩色 fufu 变成老旧终端的单色荧光绿 */
+            filter: sepia(1) hue-rotate(125deg) saturate(300%) brightness(0.8) contrast(1.5) drop-shadow(0 0 5px #39C5BB);
         }
 
         /* 独立处理保障组织的字号结构 */
         .support-card .title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
-            color: #D8F2EF;
+            color: #39C5BB;
             margin-bottom: 8px;
         }
         
         .support-card .value {
-            font-size: 16px;
-            color: #39C5BB;
+            font-size: 14px;
         }
 
         /* 设备网格 */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 18px;
+            gap: 16px;
         }
 
         .card {
-            background: #101D1B;
+            background: #000;
             padding: 20px;
-            border-radius: 18px;
-            border: 1px solid #2E6F69;
-            box-shadow: 0 0 16px rgba(57, 197, 187, 0.12);
-            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+            border: 1px solid #237A74;
+            transition: none; /* 去除动画 */
         }
 
         .card:hover {
-            transform: translateY(-6px);
-            border-color: #39C5BB;
-            box-shadow: 0 12px 30px rgba(57, 197, 187, 0.28);
+            border: 1px solid #39C5BB;
+            background: #39C5BB;
+            color: #000;
+            text-shadow: none;
+        }
+
+        .card:hover .status,
+        .card:hover .type,
+        .card:hover .days,
+        .card:hover .runtime,
+        .card:hover .date,
+        .card:hover .childType,
+        .card:hover .childDay,
+        .card:hover .dot {
+            color: #000 !important;
+            border-color: #000;
+            background: transparent;
+            box-shadow: none;
         }
 
         .top {
@@ -174,144 +204,138 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
+            border-bottom: 1px solid #237A74;
+            padding-bottom: 5px;
+        }
+        
+        .card:hover .top {
+            border-bottom-color: #000;
         }
 
         .status {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 13px;
-            color: #D8F2EF;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #39C5BB;
         }
 
+        /* 方形状态灯 */
         .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            border: 1px solid #39C5BB;
         }
 
         .green {
             background: #39C5BB;
-            box-shadow: 0 0 12px #39C5BB;
         }
 
         .gray {
-            background: #777;
+            background: transparent;
+            border-color: #237A74;
         }
 
         .type {
-            font-size: 13px;
-            color: #8CBDB9;
-            background: rgba(57, 197, 187, 0.1);
-            padding: 2px 8px;
-            border-radius: 8px;
+            font-size: 12px;
+            color: #237A74;
         }
 
         .name {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             margin-bottom: 12px;
+            margin-top: 10px;
         }
+        .name::before { content: "> "; }
 
-        /* 修复 Hover 错位问题的关键 */
         .days {
-            font-size: 46px;
+            font-size: 40px;
             font-weight: bold;
             color: #39C5BB;
-            display: inline-block; /* 保证变形不影响文档流 */
-            transform-origin: left bottom; /* 从左下角放大 */
-            transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .card:hover .days {
-            transform: scale(1.08); /* 轻微放大不再挤压底部元素 */
+            display: block;
         }
 
         .runtime {
-            font-size: 15px;
-            color: #B5D5D1;
+            font-size: 14px;
+            color: #237A74;
             margin-top: 5px;
         }
 
         .date {
-            font-size: 13px;
-            margin-top: 12px;
-            line-height: 1.7;
-            color: #8AA9A5;
+            font-size: 12px;
+            margin-top: 16px;
+            line-height: 1.5;
+            color: #237A74;
         }
 
         /* 子设备 */
         .childBox {
             margin-top: 15px;
             padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px dashed #237A74;
         }
+        .card:hover .childBox { border-top-color: #000; }
 
         .child {
-            background: rgba(255, 255, 255, 0.04);
-            padding: 10px;
-            margin-top: 8px;
-            border-radius: 10px;
-            opacity: 0;
-            transform: translateY(8px);
-            animation: appear .4s forwards;
-            transition: all .25s ease;
+            padding: 5px 0;
+            margin-top: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .child:hover {
-            background: rgba(57, 197, 187, 0.08);
-        }
-
-        @keyframes appear {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .child::before {
+            content: "+-- ";
+            color: inherit;
         }
 
         .childType {
             font-size: 12px;
-            color: #8CBDB9;
+            color: #237A74;
+            display: none; /* 简化显示 */
         }
 
         .childName {
             font-size: 14px;
-            margin: 4px 0;
+            flex-grow: 1;
+            margin-left: 5px;
         }
 
         .childDay {
             font-size: 12px;
-            color: #39C5BB;
+            color: #237A74;
         }
 
         /* 页脚 */
         .footer {
             text-align: center;
-            margin-top: 26px;
-            color: #688784;
-            font-size: 13px;
+            margin-top: 30px;
+            color: #237A74;
+            font-size: 12px;
+            border-top: 2px dashed #237A74;
+            padding-top: 10px;
+        }
+        .footer::after {
+            content: " _";
+            animation: blink 1s step-end infinite;
         }
 
-        /* 响应式布局调整 */
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* 响应式 */
         @media(max-width: 1100px) {
-            .dashboard-top {
-                grid-template-columns: 1fr 1fr;
-            }
-            .core-card {
-                grid-column: span 2;
-            }
+            .dashboard-top { grid-template-columns: 1fr 1fr; }
+            .core-card { grid-column: span 2; }
         }
 
         @media(max-width: 600px) {
-            .dashboard-top {
-                grid-template-columns: 1fr;
-            }
-            .core-card {
-                grid-column: span 1;
-            }
-            #lottie-core {
-                opacity: 0.3; /* 手机端背景化，防止遮挡文字 */
-            }
+            .dashboard-top { grid-template-columns: 1fr; }
+            .core-card { grid-column: span 1; }
+            #lottie-core { opacity: 0.2; }
         }
     </style>
 </head>
@@ -355,13 +379,13 @@
     </div>
 
     <script>
-        // 初始化 Lottie 动画（直接调用外部 json 文件）
+        // 初始化 Lottie 动画
         lottie.loadAnimation({
             container: document.getElementById('lottie-core'), 
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'fufu.json' // 确保你的 fufu.json 和 html 文件在同一个目录下
+            path: 'fufu.json' 
         });
 
         const devices = [
@@ -439,7 +463,7 @@
             
             return {
                 days,
-                runtime: `${y}年 ${m}月 ${d}天`,
+                runtime: `${y}Y ${m}M ${d}D`, // 改为短写，更符合终端感
                 active: now >= start && (!device.end || now < new Date(device.end))
             };
         }
@@ -448,8 +472,8 @@
             const now = new Date();
             const days = Math.floor((now - coreStart) / 86400000);
             
-            document.getElementById("coreRuntime").innerText = days + " 天";
-            document.getElementById("humanDays").innerText = "累计运行 " + days + "天";
+            document.getElementById("coreRuntime").innerText = days + " DAYS";
+            document.getElementById("humanDays").innerText = "UPTIME: " + days + " D";
         }
 
         function render() {
@@ -466,16 +490,16 @@
                         <div class="top">
                             <div class="status">
                                 <div class="dot ${data.active ? "green" : "gray"}"></div>
-                                ${data.active ? "服役中" : "服役周期结束"}
+                                ${data.active ? "ONLINE" : "OFFLINE"}
                             </div>
-                            <div class="type">${device.type}</div>
+                            <div class="type">[${device.type}]</div>
                         </div>
                         <div class="name">${device.name}</div>
-                        <div class="days">${data.days}天</div>
-                        <div class="runtime">累计服役 ${data.runtime}</div>
+                        <div class="days">${data.days} D</div>
+                        <div class="runtime">RUNTIME: ${data.runtime}</div>
                         <div class="date">
-                            投入服役：${device.start}
-                            ${device.end ? `<br>结束服役：${device.end}` : ""}
+                            INIT: ${device.start}
+                            ${device.end ? `<br>TERM: ${device.end}` : ""}
                         </div>
                         ${device.children ? `
                             <div class="childBox">
@@ -483,9 +507,8 @@
                                     const c = calc(x);
                                     return `
                                         <div class="child">
-                                            <div class="childType">${x.type}</div>
                                             <div class="childName">${x.name}</div>
-                                            <div class="childDay">累计服役 ${c.days}天</div>
+                                            <div class="childDay">${c.days} D</div>
                                         </div>
                                     `;
                                 }).join("")}
@@ -496,13 +519,14 @@
             });
 
             document.getElementById("count").innerText = devices.length;
-            document.getElementById("avg").innerText = Math.floor(total / devices.length) + " 天";
+            document.getElementById("avg").innerText = Math.floor(total / devices.length) + " DAYS";
             
             updateCore(total);
         }
 
         function clock() {
-            document.getElementById("time").innerText = new Date().toLocaleString("zh-CN", { hour12: false });
+            // 时间显示加入毫秒级闪烁感
+            document.getElementById("time").innerText = "SYS.TIME: " + new Date().toLocaleString("zh-CN", { hour12: false });
         }
 
         render();
