@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>永远缅怀 · 王伟同</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1e2c;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Georgia', 'Times New Roman', '宋体', 'SimSun', serif;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, #2a2f42 0%, #141824 90%);
+        }
+
+        .memorial-card {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(30, 34, 48, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 48px 48px 40px 40px;
+            padding: 36px 28px 44px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(210, 180, 140, 0.15);
+            border: 1px solid rgba(200, 170, 130, 0.2);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        /* 照片区域 ———— 浮木之忆 */
+        .photo-frame {
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto 30px;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(210, 180, 140, 0.25);
+            background: #262b3a;
+            transition: transform 0.3s ease;
+            aspect-ratio: 4 / 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-frame img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            filter: grayscale(0.45) contrast(1.05) brightness(0.9);
+            transition: filter 0.4s;
+            background: #2c3142;
+        }
+
+        .photo-frame:hover img {
+            filter: grayscale(0.25) contrast(1.1) brightness(1.0);
+        }
+
+        /* 主标题 ———— 永远缅怀 */
+        .title-epitaph {
+            font-size: 2.8rem;
+            font-weight: 500;
+            letter-spacing: 8px;
+            color: #e6dcc8;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 2px #b8a58a;
+            margin-bottom: 8px;
+            font-family: 'Georgia', 'Times New Roman', '楷体', 'KaiTi', serif;
+            word-break: keep-all;
+        }
+
+        .sub-name {
+            font-size: 1.9rem;
+            font-weight: 400;
+            color: #dacfbc;
+            letter-spacing: 6px;
+            margin-top: -8px;
+            margin-bottom: 28px;
+            text-shadow: 0 2px 8px #0b0d12;
+            border-bottom: 1px solid rgba(210, 180, 140, 0.2);
+            padding-bottom: 16px;
+            display: inline-block;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        /* 倒计时 / 天数卡片 */
+        .days-counter {
+            background: rgba(20, 24, 36, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 80px;
+            padding: 22px 20px 20px;
+            margin: 20px 0 32px;
+            border: 1px solid rgba(200, 170, 140, 0.2);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4), 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .days-label {
+            font-size: 1.2rem;
+            color: #b8aa92;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            font-weight: 300;
+        }
+
+        .days-number {
+            font-size: 5.6rem;
+            font-weight: 700;
+            color: #f0e7d6;
+            line-height: 1.2;
+            letter-spacing: 6px;
+            text-shadow: 0 0 16px #c9b294, 0 0 30px rgba(180, 140, 100, 0.2);
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(180deg, #f5efe4 20%, #cbbca8 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            padding: 0 10px;
+        }
+
+        .days-unit {
+            font-size: 1.8rem;
+            color: #c7b9a4;
+            margin-left: 4px;
+            font-weight: 300;
+            -webkit-text-fill-color: #c7b9a4;
+            background: none;
+        }
+
+        .days-description {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #aa9b86;
+            letter-spacing: 2px;
+            border-top: 1px dashed rgba(180, 155, 125, 0.2);
+            padding-top: 12px;
+            font-style: italic;
+        }
+
+        /* 记录起始日 */
+        .start-date {
+            font-size: 1.0rem;
+            color: #8f7f6a;
+            letter-spacing: 3px;
+            background: rgba(0,0,0,0.2);
+            display: inline-block;
+            padding: 6px 24px;
+            border-radius: 40px;
+            border: 1px solid rgba(160, 140, 110, 0.15);
+            margin-top: 12px;
+            backdrop-filter: blur(2px);
+        }
+
+        .start-date span {
+            color: #cbb89e;
+            font-weight: 400;
+        }
+
+        /* 纪念脚注 */
+        .memorial-footer {
+            margin-top: 40px;
+            font-size: 0.95rem;
+            color: #7a6e5c;
+            letter-spacing: 4px;
+            border-top: 1px solid rgba(160, 140, 120, 0.15);
+            padding-top: 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .memorial-footer .quote {
+            font-style: italic;
+            color: #9b8b77;
+            font-size: 1.0rem;
+            letter-spacing: 2px;
+        }
+
+        .memorial-footer .small-note {
+            font-size: 0.8rem;
+            color: #5e5546;
+            letter-spacing: 1px;
+        }
+
+        .memorial-footer .small-note i {
+            font-style: normal;
+            background: rgba(220, 200, 170, 0.05);
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 500px) {
+            .memorial-card {
+                padding: 24px 16px 32px;
+                border-radius: 32px;
+            }
+            .title-epitaph {
+                font-size: 2.2rem;
+                letter-spacing: 5px;
+            }
+            .sub-name {
+                font-size: 1.5rem;
+                letter-spacing: 4px;
+            }
+            .days-number {
+                font-size: 4.2rem;
+            }
+            .days-unit {
+                font-size: 1.4rem;
+            }
+            .days-label {
+                font-size: 1.0rem;
+            }
+            .photo-frame {
+                max-width: 280px;
+                aspect-ratio: 4 / 3;
+            }
+            .days-counter {
+                padding: 16px 12px;
+            }
+            .memorial-footer .quote {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .title-epitaph {
+                font-size: 1.8rem;
+                letter-spacing: 3px;
+            }
+            .sub-name {
+                font-size: 1.2rem;
+            }
+            .days-number {
+                font-size: 3.4rem;
+                letter-spacing: 3px;
+            }
+        }
+
+        /* 图片占位提示 —— 优雅降级 */
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #282e40;
+            color: #a79982;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            padding: 20px;
+            background-image: radial-gradient(circle at 30% 40%, #37405a, #1f2536);
+        }
+        .photo-placeholder span {
+            font-size: 2.4rem;
+            margin-bottom: 6px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="memorial-card">
+    <!-- 照片：使用img标签，若图片加载失败显示占位文字 -->
+    <div class="photo-frame">
+        <img 
+            src="src.jpg"
+            alt="王伟同 · 浮木记忆"
+            id="memorialPhoto"
+            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'photo-placeholder\'><span>🌊</span> 浮木 · 王伟同 <br><small style=\'font-size:0.8rem; opacity:0.6;\'>照片定格 2026</small></div>';"
+        />
+    </div>
+
+    <!-- 主标题 -->
+    <div class="title-epitaph">永远缅怀</div>
+    <div class="sub-name">王伟同</div>
+
+    <!-- 天数计数器 -->
+    <div class="days-counter">
+        <div class="days-label">🌿 沉默 · 守望</div>
+        <div>
+            <span class="days-number" id="daysCountDisplay">0</span>
+            <span class="days-unit">天</span>
+        </div>
+        <div class="days-description" id="dayDescription">今天是王伟同不说话的第 <span id="inlineDays">0</span> 天</div>
+        <div class="start-date">
+            ⏳ 始于 <span>2026年7月12日</span>
+        </div>
+    </div>
+
+    <!-- 纪念脚注 -->
+    <div class="memorial-footer">
+        <div class="quote">“浮木无声，记忆长存”</div>
+        <div class="small-note">
+            <i>🌊 同学 · 挚友 · 永远的王伟同</i>
+        </div>
+        <div class="small-note" style="margin-top: 4px; opacity:0.7;">
+            🕯️ 7月12日 · 静默之始
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // 起始日期：2026年7月12日 (同学被浮木制裁，不再发消息)
+        const START_DATE = new Date(2026, 6, 12); // 月份 0-11, 6 = 7月
+        // 固定为北京时间，避免时区偏移导致的日期计算偏差
+        const startUTC = Date.UTC(2026, 6, 12, 0, 0, 0, 0);
+
+        // DOM 元素
+        const daysDisplay = document.getElementById('daysCountDisplay');
+        const inlineDaysSpan = document.getElementById('inlineDays');
+        const descElement = document.getElementById('dayDescription');
+
+        function updateDaysCounter() {
+            const now = new Date();
+            // 使用 UTC 时间计算整天数，避免本地时区影响
+            const nowUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+            
+            // 计算天数差 (毫秒)
+            const diffMs = nowUTC - startUTC;
+            // 如果当前日期早于起始日期 (理论上不会，但以防万一)
+            if (diffMs < 0) {
+                // 若是7月12日当天，显示0天
+                if (nowUTC === startUTC) {
+                    setDays(0);
+                } else {
+                    // 但起始日是2026-7-12，现在不可能早于它，除了系统时间错误，设为0
+                    setDays(0);
+                }
+                return;
+            }
+
+            // 计算整天数，向下取整 (已经过完整天数)
+            const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            setDays(days);
+        }
+
+        function setDays(days) {
+            // 更新显示
+            daysDisplay.textContent = days;
+            inlineDaysSpan.textContent = days;
+            // 更新描述句子 (同时保留句子样式)
+            // 因为描述里包含内联span，我们直接替换内部内容，保持结构
+            if (descElement) {
+                // 保留 "今天是王伟同不说话的第 " 和 " 天" 
+                const prefix = '今天是王伟同不说话的第 ';
+                const suffix = ' 天';
+                // 重新构造：保留原样，只改数字
+                // 但为了安全，直接替换 innerHTML
+                descElement.innerHTML = `今天是王伟同不说话的第 <span id="inlineDays" style="font-weight:600; color:#dacfbc;">${days}</span> 天`;
+                // 更新对新生成的span引用 (但不需要再操作)
+            }
+            // 同时更新 standalone 数字
+            const inlineSpan = document.getElementById('inlineDays');
+            if (inlineSpan) {
+                inlineSpan.textContent = days;
+            }
+        }
+
+        // 初次执行
+        updateDaysCounter();
+
+        // 每60秒自动更新一次 (便于跨天时自动刷新)
+        setInterval(updateDaysCounter, 60000);
+
+        // 额外：如果页面focus时重新计算 (用户切后台回来)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                updateDaysCounter();
+            }
+        });
+
+        // 也处理页面加载完全后再次校准 (以防首次执行时DOM未完全渲染)
+        window.addEventListener('load', function() {
+            updateDaysCounter();
+        });
+
+        // 手动修复：如果描述里的内联span还没有内容，进行兜底
+        setTimeout(function() {
+            const inline = document.getElementById('inlineDays');
+            if (inline && inline.textContent === '') {
+                const currentDays = daysDisplay.textContent;
+                if (currentDays && currentDays !== '') {
+                    inline.textContent = currentDays;
+                } else {
+                    // 重新计算
+                    updateDaysCounter();
+                }
+            }
+        }, 100);
+    })();
+</script>
+
+<!-- 注：图片为内联svg占位，可替换为真实照片，只需修改 img 的 src 属性。
+     图片位置：在此代码中，用 base64 / 外链 均可。若需替换，将 src="..." 改为您的图片地址即可。
+     建议尺寸 4:3，保持视觉舒适。 -->
+</body>
+</html>
